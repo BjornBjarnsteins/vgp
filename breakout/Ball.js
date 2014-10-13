@@ -15,6 +15,7 @@ Ball.prototype.colour = "#AAAAAA";
 Ball.prototype.superBall = false;
 Ball.onPaddle = true;
 
+// Returns the total velocity of this ball
 Ball.prototype.getVel = function () {
 	return Math.sqrt(this.xVel*this.xVel + this.yVel*this.yVel);
 };
@@ -44,6 +45,9 @@ Ball.prototype.update = function (du) {
 		this.xVel = -this.getVel()*Math.sin(newAngle);
     }
 
+
+	// Handles collisions with the Wall
+	// if this ball is a superball it doesn't bounce off bricks
 	var wallCollision = g_wall.detectCollision(prevX, prevY, nextX, nextY, this.radius);
 
 	if (this.superBall) {

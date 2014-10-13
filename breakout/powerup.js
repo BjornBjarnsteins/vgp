@@ -1,3 +1,4 @@
+// Spawns a random power up at the given coordinates
 function spawnPowerUpAt(x, y) {
 	console.log('spawning Power Up');
 	var powerUp = new PowerUp({cx : x,
@@ -27,6 +28,7 @@ PowerUp.prototype.size = 10;
 PowerUp.prototype.update = function (du) {
 	var prevY = this.cy + this.velY*du;
 
+	// If the paddle catches the powerup, resolve the effect and the score
 	if (g_paddle.collidesWith(this.cx, prevY,
 							  this.cx, this.cy,
 							  this.size)) {
@@ -40,19 +42,25 @@ PowerUp.prototype.update = function (du) {
 	this.cy += this.velY*du;
 };
 
+// Removes obj from list of active powerups
 function destroy(obj) {
 	var index = g_activePowerUps.indexOf(obj);
 	g_activePowerUps.splice(index, 1);
-	/*obj.render = function () {return;};
-	obj.effect = function () {return;};
-	obj = null;*/
 }
 
 PowerUp.prototype.render = function(ctx) {
-	// TODO: change to drawImage for this.sprite
 	this.sprite.drawCentredAt(ctx, this.cx, this.cy, 0);
 };
 
+// Gives this powerup a random effect
+// * 25% chance to shrink paddle
+// * 25% chance to grow paddle
+// * 15% chance to accelerate paddle
+// * 15% chance to decelerate paddle
+// * 10% chance to enable sticky paddle
+// * 5% chance to give an extra ball
+// * 4% chance to give you a turret
+// * 1% chance to make all balls superballs
 PowerUp.prototype.randomizeEffect = function () {
 	var seed = Math.random();
 

@@ -15,6 +15,7 @@ Wall.prototype.rows = 6;
 Wall.prototype.columns = 15;
 Wall.prototype.bricksToGo = 6*15;
 
+// Initializes the Wall
 Wall.prototype.init = function () {
     this.bricks = new Array(this.rows);
     for (var i=0 ; i<this.rows ; i++) {
@@ -45,6 +46,7 @@ Wall.prototype.render = function (ctx) {
 	}
 };
 
+// Detects and resolves a collision with the wall
 Wall.prototype.detectCollision = function (prevX, prevY, nextX, nextY, r) {
 	if (nextY < this.topY || nextY > this.topY + this.height) {
 		return;
@@ -61,11 +63,13 @@ Wall.prototype.detectCollision = function (prevX, prevY, nextX, nextY, r) {
 		var prevBrickRow = this.getBrickRow(prevY);
 		var prevBrickColumn = this.getBrickColumn(prevX);
 
+		// a random number that decides whether to drop a powerup or not
 		var pwrUpSpawnSeed = Math.random()
 
 		if (this.bricks[brickRow][brickColumn].durability === 0) {
 			this.bricksToGo--;
 
+			// Checks if no bricks are left
 			if (this.bricksToGo === 0) {
 				finishGame(true);
 			}
@@ -75,6 +79,8 @@ Wall.prototype.detectCollision = function (prevX, prevY, nextX, nextY, r) {
 			}
 		}
 
+		// Returns whether the collision was a side-collision
+		// or a bottom/top collision
 		if (prevBrickRow === brickRow) {
 			return "side";
 		} else {
@@ -91,6 +97,7 @@ Wall.prototype.getBrickColumn = function (x) {
 	return Math.floor((x - this.leftX)/this.brickWidth);
 }
 
+// defunct
 function drawBrickAt(ctx, x, y, width, height, style) {
     fillBox(ctx, x, y, width, height, style);
     ctx.rect(x, y, width, height);

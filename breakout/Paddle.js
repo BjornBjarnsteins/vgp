@@ -18,6 +18,8 @@ Paddle.prototype.onPaddle = [];
 Paddle.prototype.colour = "#888888";
 Paddle.prototype.turret = false;
 
+// Returns the angle from the point of contact to the center
+// of the paddle
 Paddle.prototype.getReboundAngle = function (ballX, ballY) {
 	var dx = this.cx - ballX;
 	var dy = this.cy - ballY + this.halfHeight;
@@ -62,11 +64,10 @@ Paddle.prototype.update = function (du) {
 
 	if (eatKey(this.KEY_FIRE_TURRET) && this.turret) {
 		this.fireTurret();
-		console.log("firing turret");
 	}
 };
 
-
+// Corrects the position of the paddle if it tries to move off the screen
 Paddle.prototype.checkBounds = function (du) {
 	if (this.cx - this.halfWidth < 0) {
 		this.move(this.vel * du);
@@ -86,7 +87,7 @@ Paddle.prototype.render = function (ctx) {
                  this.halfHeight * 2,
 			     this.colour);
 
-	// if I possessed any skills doing sprites I would have 2
+	// if I possessed any sprite-making skills I would have 2
 	// different sprites that toggle with this.turret, but I don't
 	// so this ugly crap will have to do
 	if (this.turret) {
@@ -101,6 +102,8 @@ Paddle.prototype.render = function (ctx) {
 	}
 };
 
+// Checks for a collision with an object with previous coordinates
+// (prevX, prevY), next coordinates (nextX, nextY) and radius r
 Paddle.prototype.collidesWith = function (prevX, prevY,
                                           nextX, nextY,
                                           r) {
@@ -124,6 +127,7 @@ Paddle.prototype.collidesWith = function (prevX, prevY,
 // Various Paddle mechanics
 // ========================
 
+// Spawns a new ball at a random location on the paddle
 Paddle.prototype.spawnBall = function () {
 	var offset = (Math.random()-0.5)*this.halfWidth;
 
@@ -140,6 +144,9 @@ Paddle.prototype.spawnBall = function () {
 	this.catch(newBall);
 };
 
+// Removes ball from the list of active balls (causing ball to not be
+// updated, rendered etc.) and checks if the game is lost (i.e. if any
+// balls are left)
 Paddle.prototype.dropBall = function (ball) {
 	if (this.balls.length === 1) {
 		finishGame(false);
@@ -166,6 +173,7 @@ Paddle.prototype.catch = function(ball) {
 	ball.yVel = 0;
 };
 
+// Fires all balls stuck to the paddle
 Paddle.prototype.launch = function() {
 	for (var i = 0; i < this.onPaddle.length; i++) {
 		var b = this.onPaddle[i];
@@ -186,7 +194,7 @@ Paddle.prototype.launch = function() {
 	this.onPaddle = [];
 };
 
-
+// Moves the paddle by x
 Paddle.prototype.move = function (x) {
 	this.cx += x;
 
@@ -205,6 +213,7 @@ Paddle.prototype.shrink = function (x) {
 	this.halfWidth -= x/2;
 };
 
+// Accelerate of decelerate paddle
 Paddle.prototype.changeSpeedBy = function (x) {
 	this.vel += x;
 	if (this.vel > this.maxVel) {
@@ -214,6 +223,7 @@ Paddle.prototype.changeSpeedBy = function (x) {
 	}
 };
 
+// Makes all active balls superballs
 Paddle.prototype.toggleSuper = function () {
 	for (var i = 0; i < this.balls.length; i++) {
 		this.balls[i].superBall = true;
@@ -221,10 +231,12 @@ Paddle.prototype.toggleSuper = function () {
 	}
 }
 
+// Enables the turret and allows you to fire bullets with W
 Paddle.prototype.enableTurret = function () {
 	this.turret = true;
 }
 
+// Fires two bullets straight up from the ends of the paddle
 Paddle.prototype.fireTurret = function () {
 	new Bullet({cx: this.cx - this.halfWidth,
 				cy: this.cy,

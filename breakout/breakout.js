@@ -45,10 +45,12 @@ var g_paddle = new Paddle({
 // Create The Wall
 var g_wall = new Wall({width: g_canvas.width});
 
+// List of powerups that are on the screen
 var g_activePowerUps = [];
 
 var background = document.getElementById('background');
 
+// List of bullets currently flying
 var g_bullets = [];
 
 // Score stuff
@@ -74,6 +76,8 @@ function renderScore(ctx) {
 var gameOver = false;
 var gameWon = false;
 
+// call this function only when the game is finished
+// if player won the game, victory === true, false otherwise
 function finishGame(victory) {
 	g_isUpdatePaused = true;
 	gameOver = true;
@@ -84,7 +88,7 @@ function finishGame(victory) {
 function renderGameOver(ctx) {
 	if (!gameOver) return;
 
-	// darken screen
+	// semitransparent overlay for the game screen
 	ctx.globalAlpha = 0.75;
 	ctx.fillRect(0, 0, g_canvas.width, g_canvas.height);
 	ctx.globalAlpha = 1;
