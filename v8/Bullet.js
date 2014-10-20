@@ -37,7 +37,7 @@ Bullet.prototype.update = function (du) {
     this.cx += this.velX * du;
 	this.cy += this.velY * du;
 
-	this.rotation += 1;
+	this.rotation += du;
 
 	this.lifeSpan--;
 
