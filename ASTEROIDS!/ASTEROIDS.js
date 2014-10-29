@@ -48,7 +48,7 @@ function createInitialShips() {
         cx : 200,
         cy : 200
     });
-    
+
 }
 
 // =============
@@ -76,9 +76,9 @@ function gatherInputs() {
 // GAME-SPECIFIC UPDATE LOGIC
 
 function updateSimulation(du) {
-    
+
     processDiagnostics();
-    
+
     entityManager.update(du);
 
     // Prevent perpetual firing!
@@ -116,7 +116,7 @@ function processDiagnostics() {
 
     if (eatKey(KEY_AVE_VEL)) g_useAveVel = !g_useAveVel;
 
-    if (eatKey(KEY_SPATIAL)) g_renderSpatialDebug = !g_renderSpatialDebug;
+	if (eatKey(KEY_SPATIAL)) g_renderSpatialDebug = !g_renderSpatialDebug;
 
     if (eatKey(KEY_HALT)) entityManager.haltShips();
 
@@ -127,13 +127,13 @@ function processDiagnostics() {
     if (eatKey(KEY_1)) entityManager.generateShip({
         cx : g_mouseX,
         cy : g_mouseY,
-        
+
         sprite : g_sprites.ship});
 
     if (eatKey(KEY_2)) entityManager.generateShip({
         cx : g_mouseX,
         cy : g_mouseY,
-        
+
         sprite : g_sprites.ship2
         });
 
